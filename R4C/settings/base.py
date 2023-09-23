@@ -1,13 +1,12 @@
 import os
 from decouple import config, Csv
 
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 SECRET_KEY = config("SECRET_KEY")
 
 DEBUG = config("DEBUG", cast=bool, default=False)
+
 PRODUCTION = config("PRODUCTION", cast=bool, default=False)
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
@@ -18,9 +17,10 @@ LOCAL_APPS = [
     "robots.apps.RobotsConfig",
 ]
 
-THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = ["jazzmin"]
 
 INSTALLED_APPS = [
+    *THIRD_PARTY_APPS,
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -28,7 +28,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     *LOCAL_APPS,
-    *THIRD_PARTY_APPS,
 ]
 
 MIDDLEWARE = [
@@ -93,6 +92,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "back_static")
 MEDIA_URL = "/back_media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "back_media")
 
+from .theme import *
 
 if PRODUCTION:
     from .prod import *
