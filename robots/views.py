@@ -1,7 +1,10 @@
 import json
+from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views import View
 from .forms import RobotForm
+from .services import ExcelServices
+
 
 class CreateRobotView(View):
     form_class = RobotForm
@@ -23,3 +26,12 @@ class CreateRobotView(View):
                 return JsonResponse({"error": str(e)}, status=400)
         else:
             return JsonResponse({"error": form.errors}, status=400)
+
+
+class InstallExcelAPIView(View):
+    def get(self, request, *args, **kwargs):
+        workbook = ExcelServices.get_excel_robots(request)
+        response = HttpResponse(content_type="application/ms-excel")
+        response["Content-Disposition"] = 'attachment; filename="robots.xlsx"'
+        workbook.save(response)
+        return response
