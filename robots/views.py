@@ -1,7 +1,7 @@
-import json
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views import View
+from common.services import ValidateService
 from .forms import RobotForm
 from .services import ExcelServices
 
@@ -10,11 +10,7 @@ class CreateRobotView(View):
     form_class = RobotForm
 
     def post(self, request):
-        try:
-            data = json.loads(request.body)
-        except json.JSONDecodeError as e:
-            return JsonResponse({"error": "Invalid JSON data"}, status=400)
-
+        data = ValidateService.validate_json(request.body)
         form = self.form_class(data)
         if form.is_valid():
             instance = form.save(commit=False)
