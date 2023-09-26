@@ -26,7 +26,7 @@ class CreateRobotView(View):
 
 class InstallExcelAPIView(View):
     def get(self, request, *args, **kwargs):
-        workbook = ExcelServices.get_excel_robots(request)
+        workbook = ExcelServices.get_excel_robots()
         response = HttpResponse(content_type="application/ms-excel")
         response["Content-Disposition"] = 'attachment; filename="robots.xlsx"'
         workbook.save(response)

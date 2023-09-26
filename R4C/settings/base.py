@@ -103,4 +103,5 @@ from .theme import *
 
 if PRODUCTION:
     from .prod import *
-from .dev import *
+else:
+    from .dev import *

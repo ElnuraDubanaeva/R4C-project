@@ -47,11 +47,15 @@ class ExcelServices:
             created_at__range=(start_date, end_date),
             is_deleted=False,
             model=robot_model,
-        ).annotate(count=Count("version"))
+        )
+        robot_serials = list(robots.values_list("serial", flat=True))
+
         robots_query = {}
         data = [cls.headers]
-        for index, robot in enumerate(robots):
-            data.append([index + 1, robot.model, robot.version, robot.count])
+        distinct_robots = robots.order_by("serial").distinct("serial")
+        for index, robot in enumerate(distinct_robots):
+            count = robot_serials.count(robot.serial)
+            data.append([index + 1, robot.model, robot.version, count])
             robots_query[robot.model] = data
         return data
 
@@ -64,7 +68,8 @@ class ExcelServices:
         default_sheet = workbook.active
         workbook.remove(default_sheet)
 
-        unique_models = list(set(cls.__model.objects.values_list("model", flat=True)))
+        unique_models = list(cls.__model.objects.order_by("model").distinct("model").values_list("model", flat=True))
+        
 
         for model in unique_models:
             worksheet = workbook.create_sheet(title=model)

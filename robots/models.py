@@ -7,7 +7,6 @@ class Robot(BaseModel):
         max_length=5,
         blank=False,
         null=False,
-        unique=True,
         verbose_name="Серийный номер",
     )
     model = models.CharField(
