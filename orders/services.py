@@ -19,9 +19,9 @@ class OrderService:
         cls.__order_model.objects.create(
             customer=customer[0], robot_serial=robot_serial
         )
-        try:
-            robot = cls.__robot_model.objects.get(serial=robot_serial)
-            data = f"Ваш заказ {robot.serial} в наличий!"
-        except cls.__robot_model.DoesNotExist:
+        robot = cls.__robot_model.objects.filter(serial=robot_serial)
+        if robot.exists():
+            data = f"Ваш заказ {robot.first().serial} в наличий!"
+        else:
             data = "Как только робот будет в наличий мы вам напишем на почту!"
         return data

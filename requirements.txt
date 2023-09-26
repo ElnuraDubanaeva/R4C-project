@@ -1,0 +1,6 @@
+black==23.9.1
+Django==4.2.5
+django-jazzmin==2.6.0
+openpyxl==3.1.2
+psycopg2-binary==2.9.7
+python-decouple==3.8

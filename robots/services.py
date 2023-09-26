@@ -68,8 +68,11 @@ class ExcelServices:
         default_sheet = workbook.active
         workbook.remove(default_sheet)
 
-        unique_models = list(cls.__model.objects.order_by("model").distinct("model").values_list("model", flat=True))
-        
+        unique_models = list(
+            cls.__model.objects.order_by("model")
+            .distinct("model")
+            .values_list("model", flat=True)
+        )
 
         for model in unique_models:
             worksheet = workbook.create_sheet(title=model)
